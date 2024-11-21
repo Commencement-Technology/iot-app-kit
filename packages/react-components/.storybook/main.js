@@ -1,24 +1,39 @@
-require('dotenv').config();
-const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
+import dotenv from 'dotenv';
+import { dirname, join } from 'path';
+import TsconfigPathsPlugin from 'tsconfig-paths-webpack-plugin';
+
+dotenv.config();
+
+function getAbsolutePath(value) {
+  return dirname(require.resolve(join(value, 'package.json')));
+}
 
 module.exports = {
   stories: ['../stories/**/*.stories.@(ts|tsx|js|jsx)'],
   addons: [
-    '@storybook/addon-links',
-    '@storybook/addon-essentials',
-    '@storybook/preset-scss',
-    'storybook-dark-mode',
+    getAbsolutePath('@storybook/addon-links'),
+    getAbsolutePath('@storybook/addon-essentials'),
+    getAbsolutePath('@storybook/preset-scss'),
+    getAbsolutePath('storybook-dark-mode'),
   ],
-  framework: '@storybook/react',
-  core: {
-    builder: {
-      name: 'webpack5',
-      options: {
-        lazyCompilation: true,
+  framework: {
+    name: getAbsolutePath('@storybook/react-webpack5'),
+    options: {
+      builder: {
+        useSWC: true,
         fsCache: true,
       },
     },
   },
+  swc: () => ({
+    jsc: {
+      transform: {
+        react: {
+          runtime: 'automatic',
+        },
+      },
+    },
+  }),
   typescript: {
     check: false,
     reactDocgen: false,

@@ -1,7 +1,7 @@
 import { applyMode, Mode } from '@cloudscape-design/global-styles';
+import '@iot-app-kit/charts/dist/styles.css';
 import { useEffect } from 'react';
 import { useDarkMode } from 'storybook-dark-mode';
-
 import './global.scss';
 
 // https://storybook.js.org/docs/react/writing-stories/parameters#global-parameters

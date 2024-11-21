@@ -1,9 +1,18 @@
-const path = require('path');
+import { fromIni } from '@aws-sdk/credential-providers';
+import path from 'path';
 
-const { fromIni } = require('@aws-sdk/credential-providers');
+function getAbsolutePath(value) {
+  return path.dirname(require.resolve(path.join(value, 'package.json')));
+}
+
 module.exports = {
   stories: ['../stories/**/*.stories.mdx', '../stories/**/*.stories.@(js|jsx|ts|tsx)'],
-  addons: ['@storybook/addon-links', '@storybook/addon-essentials', '@storybook/preset-scss', 'storybook-dark-mode'],
+  addons: [
+    getAbsolutePath('@storybook/addon-links'),
+    getAbsolutePath('@storybook/addon-essentials'),
+    getAbsolutePath('@storybook/preset-scss'),
+    getAbsolutePath('storybook-dark-mode'),
+  ],
   staticDirs: [
     '../dist',
     '../public',
@@ -13,18 +22,6 @@ module.exports = {
     // `${path.resolve('./node_modules/@matterport/webcomponent/built-bundle')}`,
     `${path.resolve('../../node_modules/@matterport/webcomponent/built-bundle')}`,
   ],
-  typescript: {
-    // also valid 'react-docgen-typescript' | false
-
-    // react-docgen-typescript is the default value, however it will
-    // mess up with Enums in typescript by adding additional field to
-    // the Enum object so you cannot use Object.keys(Enum) to get all
-    // enum values. Change to react-docgen solves the problem and
-    // react-docgen is also faster. However it has a worse error handling
-    // page during dev (white screen instead of showing errors).
-    // See this issue: https://github.com/storybookjs/storybook/issues/9832
-    reactDocgen: 'react-docgen',
-  },
   env: async (config) => {
     try {
       const credential = await fromIni({
@@ -39,6 +36,37 @@ module.exports = {
       // Mostly for build hosts, and other environments where you don't want to load AWS config
       return config;
     }
+  },
+  framework: {
+    name: getAbsolutePath('@storybook/react-webpack5'),
+    options: {
+      builder: {
+        useSWC: true,
+        fsCache: true,
+        lazyCompilation: true,
+      },
+    },
+  },
+  swc: () => ({
+    jsc: {
+      transform: {
+        react: {
+          runtime: 'automatic',
+        },
+      },
+    },
+  }),
+  typescript: {
+    // also valid 'react-docgen-typescript' | false
+
+    // react-docgen-typescript is the default value, however it will
+    // mess up with Enums in typescript by adding additional field to
+    // the Enum object so you cannot use Object.keys(Enum) to get all
+    // enum values. Change to react-docgen solves the problem and
+    // react-docgen is also faster. However it has a worse error handling
+    // page during dev (white screen instead of showing errors).
+    // See this issue: https://github.com/storybookjs/storybook/issues/9832
+    reactDocgen: 'react-docgen',
   },
   webpackFinal: async (config) => {
     // `configType` has a value of 'DEVELOPMENT' or 'PRODUCTION'
@@ -63,8 +91,5 @@ module.exports = {
     ); // Return the altered config
 
     return config;
-  },
-  core: {
-    builder: 'webpack5',
   },
 };

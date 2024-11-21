@@ -13,7 +13,7 @@
     "fix": "eslint --fix . --cache --cache-location .cache/eslint/"
   },
   "devDependencies": {
-    "@iot-app-kit/testing-util": "12.1.0",
+    "@iot-app-kit/testing-util": "*",
     "@storybook/addon-essentials": "^7.6.6",
     "@storybook/addon-interactions": "^7.6.6",
     "@storybook/addon-links": "^7.6.6",
@@ -26,7 +26,7 @@
     "@storybook/test": "^7.6.6",
     "@storybook/theming": "^7.6.6",
     "@types/node": "^18.16.18",
-    "eslint-config-iot-app-kit": "12.1.0",
+    "eslint-config-iot-app-kit": "*",
     "prop-types": "^15.8.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -35,7 +35,7 @@
     "typescript": "^5.5.4"
   },
   "dependencies": {
-    "@iot-app-kit/core": "12.1.0",
-    "@iot-app-kit/react-components": "12.1.0"
+    "@iot-app-kit/core": "*",
+    "@iot-app-kit/react-components": "*"
   }
 }

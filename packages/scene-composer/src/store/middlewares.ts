@@ -1,11 +1,9 @@
-import { type State, type StateCreator } from 'zustand';
 import { produce, type Draft } from 'immer';
+import { type State, type StateCreator } from 'zustand';
 import createVanilla, { type GetState, type SetState, type StoreApi } from 'zustand/vanilla';
-
 import DebugLogger from '../logger/DebugLogger';
-
-import { SceneComposerOperationTypeMap } from './StoreOperations';
 import { type RootState } from './Store';
+import { SceneComposerOperationTypeMap } from './StoreOperations';
 
 const LOG = new DebugLogger('stateStore');
 
@@ -35,7 +33,7 @@ export const immer =
     config(
       (partial, replace) => {
         const nextState = typeof partial === 'function' ? produce(partial as (state: Draft<T>) => T) : (partial as T);
-        set(nextState, replace);
+        set(nextState as Parameters<typeof set>[0], replace);
       },
       get,
       api,

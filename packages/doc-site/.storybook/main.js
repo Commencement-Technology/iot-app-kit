@@ -1,4 +1,4 @@
-import { join, dirname } from 'path';
+import { dirname, join } from 'path';
 
 /**
  * This function is used to resolve the absolute path of a package.
@@ -14,7 +14,7 @@ const config = {
     '../stories/**/*.mdx',
     '../stories/**/*.stories.@(js|jsx|mjs|ts|tsx)',
   ],
-  staticDirs: [{ from: "../assets", to: "/assets" }],
+  staticDirs: [{ from: '../assets', to: '/assets' }],
   addons: [
     getAbsolutePath('@storybook/addon-links'),
     getAbsolutePath('@storybook/addon-essentials'),
@@ -27,6 +27,8 @@ const config = {
     options: {
       builder: {
         useSWC: true,
+        fsCache: true,
+        lazyCompilation: true,
       },
     },
   },

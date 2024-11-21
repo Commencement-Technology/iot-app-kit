@@ -1,24 +1,24 @@
-import { useEffect, useMemo, useState } from 'react';
-import { type ComponentMeta, type ComponentStory } from '@storybook/react';
-import type { FC } from 'react';
+import { type Viewport } from '@iot-app-kit/core';
 import { getIotEventsClient, getSiteWiseClient } from '@iot-app-kit/core-util';
+import { initialize } from '@iot-app-kit/source-iotsitewise';
+import { type ComponentMeta, type ComponentStory } from '@storybook/react';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { sub } from 'date-fns';
+import type { FC } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import { TimeSelection, TimeSync, useViewport } from '../../src';
+import { useAlarms } from '../../src/hooks/useAlarms';
 import {
   queryClient,
   useDescribeAssetModelCompositeModel,
   useDescribeAssetProperty,
   useGetAssetPropertyValueHistory,
 } from '../../src/queries';
-import { getEnvCredentials, getRegion } from '../utils/query';
-import { type Viewport } from '@iot-app-kit/core';
-import { sub } from 'date-fns';
-import { useSiteWiseAnomalyDataSource } from '../../src/queries/useSiteWiseAnomalyDataSource';
-import { TimeSelection, TimeSync, useViewport } from '../../src';
-import { isDurationViewport } from '../../src/utils/isDurationViewport';
-import { useLatestAssetPropertyValues } from '../../src/queries/useLatestAssetPropertyValues/useLatestAssetPropertyValues';
 import { useHistoricalAssetPropertyValues } from '../../src/queries/useHistoricalAssetPropertyValues/useHistoricalAssetPropertyValues';
-import { useAlarms } from '../../src/hooks/useAlarms';
-import { initialize } from '@iot-app-kit/source-iotsitewise';
+import { useLatestAssetPropertyValues } from '../../src/queries/useLatestAssetPropertyValues/useLatestAssetPropertyValues';
+import { useSiteWiseAnomalyDataSource } from '../../src/queries/useSiteWiseAnomalyDataSource';
+import { isDurationViewport } from '../../src/utils/isDurationViewport';
+import { getEnvCredentials, getRegion } from '../utils/query';
 
 const ASSET_MODEL_ID = '4c8e3da0-d3ec-4818-86b3-44a1e6b98531';
 const ASSET_MODEL_COMPOSITE_MODEL_ID = 'a85b0fb2-b259-441c-aacc-d7d7495214f5';
@@ -149,8 +149,6 @@ export const HistoricalAssetPropertyValues: ComponentStory<FC> = () => {
     ],
   });
 
-  console.log([...responses1, ...responses2].map((r) => r.data));
-
   return (
     <RenderQueries json={[...responses1, ...responses2].map((r) => r.data)} />
   );
@@ -240,12 +238,6 @@ export const LatestAssetPropertyValues: ComponentStory<FC> = () => {
     ],
   });
 
-  console.log(
-    [...responses1, ...responses2, ...responses3, ...responses4].map(
-      (r) => r.data
-    )
-  );
-
   return (
     <RenderQueries
       json={[...responses1, ...responses2, ...responses3, ...responses4].map(
@@ -261,7 +253,6 @@ export const DescribeAssetModelCompositeModel: ComponentStory<FC> = () => {
     assetModelId: ASSET_MODEL_ID,
     assetModelCompositeModelId: ASSET_MODEL_COMPOSITE_MODEL_ID,
   });
-  console.log(data);
 
   return <RenderQueries json={data} />;
 };
@@ -275,7 +266,6 @@ export const GetAssetPropertyValueHistory: ComponentStory<FC> = () => {
     endDate: VIEWPORT.end,
     fetchAll: true,
   });
-  console.log(data);
 
   return <RenderQueries json={data} />;
 };
@@ -287,7 +277,6 @@ export const DescribeAssetProperty: ComponentStory<FC> = () => {
     assetId: ASSET_ID,
     propertyId: '190e76b7-b4f9-4039-9522-2ef7952f1acc',
   });
-  console.log(data);
 
   return <RenderQueries json={data} />;
 };
@@ -306,7 +295,6 @@ const RenderL4EAnomalyQuery = () => {
     predictionDefinitionId: PREDICTION_DEFINITION_ID,
   });
 
-  console.log(res);
   return (
     <TimeSync>
       <RenderQueries json={res} />

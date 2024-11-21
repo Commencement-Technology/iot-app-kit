@@ -1,6 +1,6 @@
-import { useDarkMode } from 'storybook-dark-mode';
-import { useEffect } from 'react';
 import { applyMode, Mode } from '@cloudscape-design/global-styles';
+import { useEffect } from 'react';
+import { useDarkMode } from 'storybook-dark-mode';
 
 const awsCredentialsDefaultFormat = '{ "accessKeyId": "", "secretAccessKey": "", "sessionToken": "" }';
 const awsCredentials = process.env.awsCredentials
@@ -22,7 +22,6 @@ export const decorators = [
     const isDarkMode = useDarkMode();
 
     useEffect(() => {
-      console.log('isDarkMode', isDarkMode);
       if (isDarkMode) {
         applyMode(Mode.Dark);
       } else {
@@ -30,10 +29,9 @@ export const decorators = [
       }
     }, [isDarkMode]);
 
-    return <Story />
-  }
-]
-
+    return <Story />;
+  },
+];
 
 export const globalTypes = {
   locale: {
